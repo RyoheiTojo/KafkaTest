@@ -1,6 +1,7 @@
 # KafkaTest
 kafkaのテスト用ansible
 
+```
 ■構成
 Ansibleサーバ1台；AWS t2.micro
 Kafka Broker3台：AWS t2.small
@@ -42,10 +43,13 @@ $ cat id_rsa.pub >> ~/.ssh/authorized_keys
 ６。Code取得 (ec2-user)
 $ git clone https://github.com/RyoheiTojo/KafkaTest.git
 
-７。OracleJDK配置
+７。OracleJDK配置 (ec2-user)
 　jdk-8u201-linux-x64.rpmを取得
 　https://www.oracle.com/technetwork/java/javase/downloads/index.html
 
 　/home/ec2-user/KafkaTest/roles/jdk/filesに配置
 
-８。Ansible実行
+８。Ansible実行 (ec2-user)
+$ cd /home/ec2-user/KafkaTest
+$ ansible-playbook -i production site.yml
+```
