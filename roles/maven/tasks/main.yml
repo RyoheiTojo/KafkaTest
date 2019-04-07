@@ -1,0 +1,17 @@
+---
+# tasks file for maven
+
+- name: Unarchive maven.tar.gz
+  unarchive:
+    dest: /opt
+    owner: root
+    group: root
+    src: ../files/{{ mavenfile }}
+
+- name: Distribute maven.sh
+  template:
+    src: ../templates/maven.sh
+    dest: /etc/profile.d/
+    owner: root
+    group: root
+    mode: 0755

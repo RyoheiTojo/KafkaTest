@@ -1,0 +1,5 @@
+---
+# vars file for maven
+
+mavenfile: apache-maven-3.6.0-bin.tar.gz
+mavenhome: /opt/apache-maven-3.6.0
