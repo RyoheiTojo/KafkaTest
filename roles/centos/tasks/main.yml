@@ -1,0 +1,33 @@
+---
+# tasks file for centos
+
+# Change hostname
+- name: Set hostname
+  hostname:
+    name: "{{ inventory_hostname }}"
+
+# Distribute hosts
+- name: Set node information
+  set_fact:
+    _nodes: "{{ _nodes | default([]) + [{'hostname': hostvars[item].ansible_hostname, 'address': hostvars[item].ansible_eth0.ipv4.address}] }}"
+  run_once: yes
+  with_items: "{{ ansible_play_hosts }}"
+  when:
+    - hostvars[item].ansible_eth0 is defined
+
+- name: Distribute hosts file
+  become: yes
+  template:
+    src: hosts
+    dest: /etc/hosts
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
+
+# Test tool
+- name: Telnet Install
+  yum:
+    name: telnet
+    state: latest
+

@@ -1,0 +1,81 @@
+# tasks file for kafka_test
+#
+# Add User
+
+- name: Create groups
+  group: name={{ item.name }} gid={{ item.gid }}
+  with_items: "{{ groups_list }}"
+
+- name: Create users
+  user: name={{ item.name }} uid={{ item.uid }} groups={{ item.group }} password={{ item.password }}
+  with_items: "{{ users_list }}"
+
+# Regist Repositry
+
+- name: Import pubkey
+  shell: rpm --import "{{ pubkeyURL }}"
+
+- name: Cp repo file
+  copy:
+    src: ../files/confluent.repo
+    dest: /etc/yum.repos.d/
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Yum cleanup
+  shell: yum clean all
+
+- name: Install confluent Platform
+  yum:
+    name: confluent-platform-oss-2.11
+    state: present
+
+# Kafka Setting
+
+- name: make dir
+  file:
+    path: /var/lib/kafka/data
+    state: directory
+    owner: "{{ kafka_user }}"
+    group: "{{ kafka_group }}"
+    mode: 0750
+
+- name: Distribute zookeeper.properties
+  template:
+    src: ../templates/zookeeper.properties
+    dest: /etc/kafka/
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Distribute myid
+  template:
+    src: ../templates/myid
+    dest: /var/lib/zookeeper/myid
+    owner: "{{ kafka_user }}"
+    group: "{{ kafka_group }}"
+    mode: 0644
+
+- name: Distribute server.properties
+  template:
+    src: ../templates/server.properties
+    dest: /etc/kafka/
+    owner: root
+    group: root
+    mode: 0644
+
+# Systemd Restart
+
+- name: Restart Zookeeper
+  systemd:
+    state: restarted
+    daemon_reload: yes
+    name: confluent-zookeeper
+
+- name: Restart Kafka
+  systemd:
+    state: restarted
+    daemon_reload: yes
+    name: confluent-kafka
+

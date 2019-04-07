@@ -1,0 +1,7 @@
+- name: Construct Kafka Broker
+  hosts: broker
+  become: yes
+  roles:
+    - centos
+    - jdk
+    - kafka

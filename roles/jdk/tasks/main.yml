@@ -1,0 +1,24 @@
+---
+# tasks file for jdk
+
+- name: Cp file
+  copy:
+    src: ../files/jdk-8u201-linux-x64.rpm
+    dest: /tmp/
+
+- name: Rpm Install
+  yum:
+    name: /tmp/jdk-8u201-linux-x64.rpm
+    state: present
+
+- name: cp java.sh
+  copy:
+    src: ../files/java.sh
+    dest: /etc/profile.d/
+    owner: root
+    group: root
+    mode: 755
+
+- name: Execute java.sh
+  shell: source /etc/profile.d/java.sh
+

@@ -1,0 +1,23 @@
+# User definition
+kafka_user: 'cp-kafka'
+kafka_group: 'confluent'
+
+groups_list:
+  - { name: "{{ kafka_group }}", gid: '5000' }
+
+users_list:
+  - { name: "{{ kafka_user }}", uid: '10000', group: "{{ kafka_group }}", password: 'cp-kafka' }
+
+# Package information
+pubkeyURL: "https://packages.confluent.io/rpm/5.0/archive.key"
+
+# Product Setting
+initLimit: 10
+syncLimit: 5
+clientConnectPort: 2181
+zookeeperPort1: 2888
+zookeeperPort2: 3888
+
+kafka_logdir: /var/lib/kafka/data
+
+# vars file for kafka_test

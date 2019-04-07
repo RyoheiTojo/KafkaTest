@@ -1,0 +1,7 @@
+[broker]
+kafka-broker01
+kafka-broker02
+kafka-broker03
+
+[broker:vars]
+kafka_cluster_group="broker"
