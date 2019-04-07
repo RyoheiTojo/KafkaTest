@@ -1,0 +1,7 @@
+- name: Construct Developer Environment
+  hosts: build
+  become: yes
+  roles:
+    - centos
+    - jdk
+    - maven
